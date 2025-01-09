@@ -9,33 +9,33 @@ print(data)
 x = data["Date"]
 y = data["NO2(GT)"]
 years=[]
-months=[]
-days2004=[]
-days2005=[]
+days=[[]]
 xSplit=[]
-Data2004=[]
-Data2005=[]
+Data=[[]]
+colors=["r",'g','b','c','m','y']
 for i in range(len(y)):
     xSplit.append(x[i].split("/"))
-for i in range(len(xSplit)):
-    #print(data["Time"][i],ySplit[i][1])
-    if data["Time"][i]=="04.00.00" and int(xSplit[i][1])==3 and int(xSplit[i][2])==2004:
-        Data2004.append(y[i])
-        days2004.append(int(xSplit[i][0]))
-    if data["Time"][i]=="04.00.00" and int(xSplit[i][1])==3 and int(xSplit[i][2])==2005:
-        Data2004.append(y[i])
-        days2004.append(int(xSplit[i][0]))
-print(Data2004)
-print(days2004)
-fig,graph = plt.subplots(2)
-graph[0].scatter(Data2004,days2004)
-graph[0].set_xlabel("Nitrogen Dioxide concentration (ppm)")
-graph[0].set_ylabel("Day of Month")
-graph[1].scatter(Data2005,days2005)
-graph[1].set_xlabel("Nitrogen Dioxide concentration (ppm)")
-graph[1].set_ylabel("Day of Month")
+fig, graph = plt.subplots(4)
 
-plt.tight_layout()
+for m in range(12):
+    for i in range(len(xSplit)):
+        #print(data["Time"][i],ySplit[i][1])
+        if data["Time"][i]=="04.00.00" and int(xSplit[i][1])==m and int(xSplit[i][2])==2005:
+            Data[m].append(y[i])
+            days[m].append(int(xSplit[i][0]))
+    if m>11:
+        graph[0].scatter(days[m],Data[m],label="Winter",c=colors[m-12])
+    if 0<m<3:
+        graph[0].scatter(days[m],Data[m],label="Winter",c=colors[m+1])
+    if 3<m<6:
+        graph[1].scatter(days[m],Data[m],label="Spring",c=colors[m-3])
+    if 6<m<8:
+        graph[2].scatter(days[m],Data[m],label='Summer',c=colors[m-6])
+    if 8<m<12:
+        graph[3].scatter(days[m],Data[m],label='Fall',c=colors[m-8])
+    for i in range(4):
+        graph[i].set_xlabel("Day of month")
+        graph[i].set_ylabel("Concentration of NO2(ppm)")
 plt.show()
 
 

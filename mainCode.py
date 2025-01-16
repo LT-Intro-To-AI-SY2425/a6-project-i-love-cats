@@ -5,7 +5,7 @@ from sklearn.linear_model import LinearRegression
 from sklearn.model_selection import train_test_split
 
 data=pd.read_csv("AirQualityUCI.csv", sep=";")
-print(data)
+# print(data)
 x = data["Date"]
 y = data["NO2(GT)"]
 year=[]
@@ -45,6 +45,19 @@ y2=data2005["NO2(GT)"]
 plt.scatter(x2,y2, c="r", label="2005")
 
 
+data["Year"] = year
+data["Month"] = month
+data["Day"] = day
+#print(data)
 
-plt.legend()
+#print(data["Month"])
+for i in range(len(data)):
+    #print(data["Month"][i],data["Year"][i])
+    if data["Month"][i]!="04":
+        #print(data["Month"][i])
+        data.drop(i,inplace=True)
+print(data)
+x=data["Day"]
+y=data["NO2(GT)"]
+plt.scatter(x,y)
 plt.show()

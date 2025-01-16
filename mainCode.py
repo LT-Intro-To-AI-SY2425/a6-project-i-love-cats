@@ -8,37 +8,43 @@ data=pd.read_csv("AirQualityUCI.csv", sep=";")
 print(data)
 x = data["Date"]
 y = data["NO2(GT)"]
-years=[]
-days=[[],[],[],[],[],[],[],[],[],[],[],[],[]]
+year=[]
+month=[]
+day=[]
 xSplit=[]
-NO2=[[],[],[],[],[],[],[],[],[],[],[],[],[]]
 colors=["c",'g','b','r','m','y']
-for i in range(len(y)):
+
+for i in range(len(x)):
     xSplit.append(x[i].split("/"))
-fig, graph = plt.subplots(4)
+    
+for i in range(len(xSplit)):
+    day.append(xSplit[i][0])
+    month.append(xSplit[i][1])
+    year.append(xSplit[i][2])
 
-for m in range(1,13):
-    for i in range(len(xSplit)):
-        #print(data["Time"][i],ySplit[i][1])
-        if data["Time"][i]=="04.00.00" and int(xSplit[i][1])==m and data["NO2(GT)"][i]!=-200:
-            NO2[m].append(y[i])
-            days[m].append(int(xSplit[i][0]))
-    if m==12:
-        graph[0].scatter(days[m],NO2[m],c=colors[m-12])
-    if m<3:
-        graph[0].scatter(days[m],NO2[m],c=colors[m])
-    if 2<m<6:
-        graph[1].scatter(days[m],NO2[m],c=colors[m-3])
-    if 5<m<9:
-        graph[2].scatter(days[m],NO2[m],c=colors[m-6])
-    if 8<m<12:
-        graph[3].scatter(days[m],NO2[m],c=colors[m-9])
-    for i in range(4):
-        graph[i].set_xlabel("Day")
-        graph[i].set_ylabel("NO2(ppm)")
-#print(days)
+data["Year"] = year
+data["Month"] = month
+data["Day"] = day
+#print(data)
+data2004=data.copy(deep=True)
+data2005=data.copy(deep=True)
+for i in range(len(data2004)):
+    if data2004["Month"][i]!="03" or data2004["NO2(GT)"][i]==-200 or data2004["Year"][i]=="2005" or data2004["Time"][i]!="12.00.00":
+        data2004.drop(i,inplace=True)
+
+x=data2004["Day"]
+y=data2004["NO2(GT)"]
+plt.scatter(x,y, label="2004")
+
+for i2 in range(len(data2005)):
+    if data2005["Month"][i2]!="03" or data2005["NO2(GT)"][i2]==-200 or data2005["Year"][i2]=="2004" or data2005["Time"][i2]!="12.00.00":
+        data2005.drop(i2,inplace=True)
+
+x2=data2005["Day"]
+y2=data2005["NO2(GT)"]
+plt.scatter(x2,y2, c="r", label="2005")
+
+
+
+plt.legend()
 plt.show()
-
-
-
-
